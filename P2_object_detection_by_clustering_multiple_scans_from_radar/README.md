@@ -114,8 +114,7 @@ The components in each of the [Accumulate Radar i multiple frames by sliding win
 
    - **Coordinate Transformation** : The measurements are in the sensor frame initially, which needs to be coordinate transformed to the vehicle frame. Let **$X_i = (p_x, p_y, v_x, v_y)$** and **$\Sigma_i$** be a **measurement vector** and **measurement noise covariance**, where $i ={1, 2, 3,..., m}$ indicates that a radar has returned $m$ number of measurements at current time $t$. Let the **mounting info** corrosponding to the radar be **$(X^{mount}, Y^{mount}, \alpha^{mount})$**. The equations for coordinate tranaformation for each of the **measurement $X_i$** and the **covariance $\Sigma_i$** are as follows: <br><br> 
 
-   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **Create Rotation matrix $(R)$ and Translation vector $(t)$**
+   **Create Rotation matrix $(R)$ and Translation vector $(t)$**
 
    $$
    R_{2 \times 2} =
@@ -133,8 +132,7 @@ The components in each of the [Accumulate Radar i multiple frames by sliding win
    \end{pmatrix}
    $$
 
-   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **Perform coordinate transformation of measurement vector $(X_i)$**
+   **Perform coordinate transformation of measurement vector $(X_i)$**
    
 
    $$
@@ -161,8 +159,7 @@ The components in each of the [Accumulate Radar i multiple frames by sliding win
    $$
 
 
-   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **Perform coordinate transformation of measurement covariance $(\Sigma_i)$**
+   **Perform coordinate transformation of measurement covariance $(\Sigma_i)$**
    
 
    $$
@@ -191,8 +188,7 @@ The components in each of the [Accumulate Radar i multiple frames by sliding win
 
    - **Temporal Allignment** : To represent the measurements from the frame accumulated buffer at **$t_{k-1}$** in the current timestep **$t_k$**, the measurements are first **ego-compensated** so that the measurements are in the current ego-vehicle frame, and then the measurements are **extrapolated** under the assumption of constant velocity. Let **$\dot \omega_k$** be the ego vehicle yaw-rate in the interval **$(t_{k-1}, t_k]$**. Let **$X_i = (p_x, p_y, v_x, v_y)$** and **$\Sigma_i$** be a **measurement vector** and **measurement noise covariance** from the frame buffer. The temporal allignment is performed as follows <br><br>  
 
-   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **Compute the change in yaw $(\Delta\omega)$**
+   **Compute the change in yaw $(\Delta\omega)$**
 
    $$
    \Delta t = t_k - t_{k-1}
@@ -202,8 +198,7 @@ The components in each of the [Accumulate Radar i multiple frames by sliding win
    \Delta\omega = \dot \omega_k * \Delta t
    $$
 
-   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **Compute the rotation matrix $(R)$**
+   **Compute the rotation matrix $(R)$**
 
    $$
    R_{2 \times 2} =
@@ -213,8 +208,7 @@ The components in each of the [Accumulate Radar i multiple frames by sliding win
    \end{pmatrix}
    $$
 
-   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **Ego-motion compensation of measurements $(X_i)$ and measurement noise covariance $(\Sigma_i)$**
+   **Ego-motion compensation of measurements $(X_i)$ and measurement noise covariance $(\Sigma_i)$**
 
    $$
    \begin{pmatrix}
@@ -248,8 +242,7 @@ The components in each of the [Accumulate Radar i multiple frames by sliding win
    \end{pmatrix}^T
    $$
 
-   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **Extrapolate measurements $(X_i)$**
+   **Extrapolate measurements $(X_i)$**
 
    $$
    \begin{pmatrix}
@@ -303,22 +296,19 @@ Here only the important points are discussed regarding the implementation of DBS
 
    - **Cluster Properties** : Let a cluster $C_i$ is formed from a set of measurements with state $X = (x_1, x_2, ... x_n)$ and covariances $\Sigma = (\Sigma_1, \Sigma_2, \Sigma_3, ... , \Sigma_n)$. For each of the clusters $C_i$ the below properties are calculated.
 
-   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **Cluster Mean $(\mu_i)$**
+   **Cluster Mean $(\mu_i)$**
 
    $$
    \mu_i = \dfrac{1}{n} \sum_{j=1}^{n} x_j
    $$
 
-   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **Cluster Average Covariance $(\sigma_i^{mean})$**
+   **Cluster Average Covariance $(\sigma_i^{mean})$**
 
    $$
    \sigma_i^{mean} = \dfrac{1}{n} \sum_{j=1}^{n} \Sigma_j
    $$
 
-   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **Cluster Sample Covariance $(\sigma_i^{sample})$**
+   **Cluster Sample Covariance $(\sigma_i^{sample})$**
 
    $$
    \sigma_i^{sample} = \dfrac{1}{n-1} \sum_{j=1}^{n} (x_j - \mu_i)(x_j - \mu_i)^T
@@ -334,29 +324,25 @@ Here only the important points are discussed regarding the implementation of DBS
 ### 7. Merge Clusters <a name="t7"></a>
 If a certain number of clusters belong to the same object, then those clusters are merged. The merged cluster properties are recalculated. Let $C = (c_1, c_2, ... c_n)$ be a set of $n$ clusters that corrospond to the same object. Each of the cluster $c_i$ has the properties: mean, average covariance, sample covariance and number of samples $( \mu_i , \Sigma_i^{avg} , \Sigma_i^{sample}, n_i )$. The merged cluster properties $( \mu , \Sigma^{avg} , \Sigma^{sample}, N )$ are calculated using the below formulas: <br> 
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **Number of samples $(N)$** 
+**Number of samples $(N)$** 
 
 $$
 N = \sum_{i=1}^{n} n_i
 $$
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **Mean $(\mu)$** 
+**Mean $(\mu)$** 
 
 $$
 \mu = \sum_{i=1}^{n} \Bigl(\dfrac{n_{i}}{N}\Bigr) \mu_i 
 $$
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **Average Covariance $(\Sigma^{avg})$** 
+**Average Covariance $(\Sigma^{avg})$** 
 
 $$
 \Sigma^{avg} = \sum_{i=1}^{n} \Bigl(\dfrac{n_{i}}{N}\Bigr)  \Sigma_i^{avg}
 $$
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **Sample Covariance $(\Sigma^{sample})$** 
+**Sample Covariance $(\Sigma^{sample})$** 
 
 $$
 \Sigma^{sample} = \sum_{i=1}^{n} \Bigl(\dfrac{n_{i} - 1}{N - 1}\Bigr) \Sigma_i^{sample} +  \sum_{i=1}^{n} \Bigl(\dfrac{n_{i}}{N - 1}\Bigr) (\mu_i-\mu)(\mu_i-\mu)^T

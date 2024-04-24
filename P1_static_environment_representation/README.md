@@ -103,10 +103,11 @@ The components in each of the Radar $i$ [Static Environment Grid Estimation](#t4
 
    - **Coordinate Transformation Sensor frame to Vehicle Frame** : Here the measurements are coordinate transformed from sensor frame to vehicle frame. <br>
 
-   - **Compute Measurement Grid** : The measurements are first upsampled by random sampling, the probability (weight) and the corrosponding log-odds is computed for each of the samples. Samples with unique cell IDs are selected. If multiple samples have the same cell ID, the sample that has the largest weight is selected. The sample position and log-odds $(x_i, y_i, l_i)$ is passed as the output. Below are the key steps written formally for sampling and weight computation. Let $(x_k, y_k)$ be a measurement.<br>
+   - **Compute Measurement Grid** : The measurements are first upsampled by random sampling, the probability (weight) and the corrosponding log-odds is computed for each of the samples. Samples with unique cell IDs are selected. If multiple samples have the same cell ID, the sample that has the largest weight is selected. The sample position and log-odds $(x_i, y_i, l_i)$ is passed as the output. Below are the key steps written formally for sampling and weight computation. Let $(x_k, y_k)$ be a measurement.
+  
+  <br>
    
-   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **For each measurement generate samples**
+   **For each measurement generate samples**
 
    $$
    \begin{pmatrix}
@@ -203,29 +204,37 @@ The components in each of the Radar $i$ [Static Environment Grid Estimation](#t4
    ![](./readme_artifacts/update_rules.PNG)
 
 
-   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <ins>The state update equations are listed below</ins>. <br><br><br>
-   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **Un-Gated Measurement Grid Cell IDs**
-            $$x_{upd}^i = x_{meas}^i$$
-            $$y_{upd}^i = y_{meas}^i$$
-            $$l_{upd}^i = a_{0} * l_{meas}^i$$  <br>
-   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **Gated Grid Cell IDs**
-            $$x_{upd}^i = w_x * x_{meas}^i + ( 1 - w_x ) * x_{pred}^i$$
-            $$y_{upd}^i = w_y * y_{meas}^i + ( 1 - w_y ) * y_{pred}^i$$
-            $$l_{upd}^i = a_1 * l_{pred}^i + l_{meas}^i$$
-            $$0 <= w_x <= 1$$
-            $$0 <= w_y <= 1$$ <br>
-   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **Un-Gated Predicted Grid Cell within active sensor FOV**
-            $$x_{upd}^i = x_{pred}^i$$
-            $$y_{upd}^i = y_{pred}^i$$
-            $$l_{upd}^i = a_2 * l_{pred}^i$$ <br>
-   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **Un-Gated Predicted Grid Cell outside active sensor FOV**
-            $$x_{upd}^i = x_{pred}^i$$
-            $$y_{upd}^i = y_{pred}^i$$
-            $$l_{upd}^i = a_3 * l_{pred}^i$$
+   **Un-Gated Measurement Grid Cell IDs**
+
+   $$x_{upd}^i = x_{meas}^i$$
+   $$y_{upd}^i = y_{meas}^i$$
+   $$l_{upd}^i = a_{0} * l_{meas}^i$$  
+            
+<br>
+
+   **Gated Grid Cell IDs**
+
+   $$x_{upd}^i = w_x * x_{meas}^i + ( 1 - w_x ) * x_{pred}^i$$
+   $$y_{upd}^i = w_y * y_{meas}^i + ( 1 - w_y ) * y_{pred}^i$$
+   $$l_{upd}^i = a_1 * l_{pred}^i + l_{meas}^i$$
+   $$0 <= w_x <= 1$$
+   $$0 <= w_y <= 1$$ 
+            
+<br>
+
+   **Un-Gated Predicted Grid Cell within active sensor FOV**
+   $$x_{upd}^i = x_{pred}^i$$
+   $$y_{upd}^i = y_{pred}^i$$
+   $$l_{upd}^i = a_2 * l_{pred}^i$$ 
+            
+<br>
+
+   **Un-Gated Predicted Grid Cell outside active sensor FOV**
+
+   $$x_{upd}^i = x_{pred}^i$$
+   $$y_{upd}^i = y_{pred}^i$$
+   $$l_{upd}^i = a_3 * l_{pred}^i$$
+
 <br>
 
 ![](./readme_artifacts/4_module_arc.PNG)
